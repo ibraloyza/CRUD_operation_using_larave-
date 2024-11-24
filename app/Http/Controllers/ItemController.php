@@ -54,6 +54,17 @@ class ItemController extends Controller
     }
     
     
+    public function destroy($id)
+    {
+        // Hel item-ka la tirtirayo
+        $item = Item::findOrFail($id);
+
+        // Tirtir item-ka
+        $item->delete();
+
+        // Dib ugu noqo bogga oo ku dar fariin guul ah
+        return redirect()->back()->with('success', 'Item deleted successfully!');
+    }
 
 
     

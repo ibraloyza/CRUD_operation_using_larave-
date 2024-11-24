@@ -20,3 +20,6 @@ Route::get('/',[ItemController::class,'index'])->name('home');
 
 // Route for updating the item
 Route::post('/items/{id}', [ItemController::class, 'update'])->name('items.update');
+
+
+Route::delete('/items/{id}/delete', [ItemController::class, 'destroy'])->name('items.destroy');

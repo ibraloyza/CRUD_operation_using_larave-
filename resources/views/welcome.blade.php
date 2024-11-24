@@ -81,6 +81,12 @@
                                 <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#updateModal-{{ $item->id }}">
                                   Edit
                               </button>
+                              <!-- Form Delete -->
+                              <form action="{{ route('items.destroy', $item->id) }}" method="POST" style="display: inline-block;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this item?')">Delete</button>
+                              </form>
                               </td>
 
                           </tr>
