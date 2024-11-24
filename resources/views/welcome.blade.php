@@ -51,7 +51,11 @@
           <div class="card shadow-sm" style="width: 52rem;">
             <div class="card-body">
               <h5 class="card-title text-center mb-4">Read Item</h5>
-     
+              @if (session('success'))
+                  <div class="alert alert-success">
+                      {{ session('success') }}
+                  </div>
+              @endif
               <form action="{{ route('items.store') }}" method="POST">
                 @csrf
                 <div class="mb-3">
@@ -73,13 +77,46 @@
                               <td>{{ $item->name }}</td>
                               <td>{{ $item->created_at }}</td>
                               <td>{{ $item->updated_at }}</td>
+                              <td>
+                                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#updateModal-{{ $item->id }}">
+                                  Edit
+                              </button>
+                              </td>
 
                           </tr>
+                          <!-- Modal Structure -->
+                          <div class="modal fade" id="updateModal-{{ $item->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <form action="{{ route('items.update', $item->id) }}" method="POST">
+                                        @csrf
+                                        @method('POST')
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Update Item</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <label for="name">Item Name</label>
+                                                <input type="text" name="name" id="name" value="{{ $item->name }}" class="form-control" required>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                          </div>  
                       @empty
                           <tr>
-                              <td colspan="3">No items found!</td>
+                              <td colspan="4">No items found!</td>
                           </tr>
                       @endforelse
+                  
+                      
+
                   </tbody>
                   
                 </table>
@@ -92,6 +129,13 @@
           </div>
 
           <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+
+
+          <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Bootstrap JavaScript -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 
     
         </body>

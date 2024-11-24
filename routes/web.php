@@ -13,3 +13,10 @@ Route::get('/', function () {
 Route::post('/items' ,[ItemController::class,'store'])->name('items.store');
 
 Route::get('/',[ItemController::class,'index'])->name('home');
+
+
+// Route for showing the edit form
+// Route::get('/items/{id}/edit', [ItemController::class, 'edit'])->name('items.edit');
+
+// Route for updating the item
+Route::post('/items/{id}', [ItemController::class, 'update'])->name('items.update');

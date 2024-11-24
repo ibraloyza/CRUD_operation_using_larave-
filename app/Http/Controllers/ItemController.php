@@ -32,24 +32,28 @@ class ItemController extends Controller
         return view('welcome', compact('items'));
     }
 
-    public function edit($id)
-    {
-        $item = Item::findOrFail($id); // Raadso item-ka id-ga saxda ah
-        return view('items.edit', compact('item')); // U dir xogta view-ga edit
-    }
+    // public function edit($id)
+    // {
+    //     $item = Item::findOrFail($id); // Raadso item-ka id-ga saxda ah
+    //     return view('items.edit', compact('item')); // U dir xogta view-ga edit
+    // }
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'name' => 'required|max:255', // Validation
-        ]);
-
+        // Hel item-ka la cusbooneysiinayo
         $item = Item::findOrFail($id);
-        $item->name = $request->name; // Update name
-        $item->save(); // Save changes
-
-        return redirect()->route('home')->with('success', 'Item updated successfully!');
+    
+        // Cusbooneysii xogta
+        $item->name = $request->input('name');
+        
+        // Keydi xogta cusub
+        $item->save();
+    
+        // Dib ugu noqo bogga oo ku dar fariin guul ah
+        return redirect()->back()->with('success', 'Item updated successfully!');
     }
+    
+    
 
 
     
