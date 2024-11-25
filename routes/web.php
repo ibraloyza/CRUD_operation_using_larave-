@@ -1,25 +1,28 @@
 <?php
-
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\toDoListController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
- return view('welcome');
-});
+    return view('home'); // Home view
+})->name('home');
 
-//Route::post('/saveItemRoute',[toDoListController::class,'saveItem'])->name('saveItem');
+Route::get('/crud', [ItemController::class, 'index'])->name('crud'); // List items
 
-Route::post('/items' ,[ItemController::class,'store'])->name('items.store');
-
-Route::get('/',[ItemController::class,'index'])->name('home');
-
-
-// Route for showing the edit form
-// Route::get('/items/{id}/edit', [ItemController::class, 'edit'])->name('items.edit');
+// Route for storing the item
+Route::post('/items', [ItemController::class, 'store'])->name('items.store');
 
 // Route for updating the item
-Route::post('/items/{id}', [ItemController::class, 'update'])->name('items.update');
+Route::put('/items/{id}', [ItemController::class, 'update'])->name('items.update'); // Changed to PUT
 
-
+// Route for deleting the item
 Route::delete('/items/{id}/delete', [ItemController::class, 'destroy'])->name('items.destroy');
+
+// Route Recycle Bin
+Route::get('/recycle-bin', [ItemController::class, 'recycleBin'])->name('items.recycle-bin');
+
+// Route Restore
+Route::patch('/items/{id}/restore', [ItemController::class, 'restore'])->name('items.restore');
+
+// Route Force Delete (Optional)
+Route::delete('/items/{id}/force-delete', [ItemController::class, 'forceDelete'])->name('items.force_delete');

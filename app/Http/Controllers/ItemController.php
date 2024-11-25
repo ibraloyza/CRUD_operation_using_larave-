@@ -1,16 +1,18 @@
 <?php
 
+
 namespace App\Http\Controllers;
 
 use App\Models\Item;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ItemController extends Controller
 {
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|max:255',
+            'name' => 'required|string|max:255', // Waxaad ka dhigtay "string" si loo xaqiijiyo in magaca uu yahay qoraal
         ]);
     
         try {
@@ -19,53 +21,54 @@ class ItemController extends Controller
             ]);
             return redirect()->back()->with('success', 'Item added successfully!');
         } catch (\Exception $e) {
-            dd($e->getMessage()); // Halkan ayuu error-ka ku soo muuqanayaa
+            Log::error($e->getMessage()); // Log-ga qaladka
+            return redirect()->back()->with('error', 'Something went wrong!');
         }
     }
 
     public function index()
     {
-        // Sooqaado xogta 'items'
         $items = Item::all();
-
-        // U dir xogta view-ga 'welcome.blade.php'
-        return view('welcome', compact('items'));
+        return view('crud', compact('items')); // U dir xogta view-ga 'crud.blade.php'
     }
-
-    // public function edit($id)
-    // {
-    //     $item = Item::findOrFail($id); // Raadso item-ka id-ga saxda ah
-    //     return view('items.edit', compact('item')); // U dir xogta view-ga edit
-    // }
 
     public function update(Request $request, $id)
     {
-        // Hel item-ka la cusbooneysiinayo
-        $item = Item::findOrFail($id);
+        $item = Item::findOrFail($id); // Raadso item-ka id-ga saxda ah
     
-        // Cusbooneysii xogta
-        $item->name = $request->input('name');
-        
-        // Keydi xogta cusub
-        $item->save();
+        $item->name = $request->input('name'); // Cusbooneysii magaca
+        $item->save(); // Keydi xogta cusub
     
-        // Dib ugu noqo bogga oo ku dar fariin guul ah
         return redirect()->back()->with('success', 'Item updated successfully!');
     }
-    
-    
+
     public function destroy($id)
     {
-        // Hel item-ka la tirtirayo
         $item = Item::findOrFail($id);
+        $item->delete(); // Tirtir item-ka
 
-        // Tirtir item-ka
-        $item->delete();
-
-        // Dib ugu noqo bogga oo ku dar fariin guul ah
-        return redirect()->back()->with('success', 'Item deleted successfully!');
+        return redirect()->back()->with('success', 'Item moved to Recycle Bin!');
     }
 
+    public function recycleBin()
+    {
+        $items = Item::onlyTrashed()->get(); // Hel dhammaan xogta la tirtiray
+        return view('recycle-bin', compact('items'));
+    }
 
-    
+    public function restore($id)
+    {
+        $item = Item::withTrashed()->findOrFail($id); // Hel xogta la tirtiray
+        $item->restore(); // Dib u soo celi xogta
+
+        return redirect()->route('items.recycle-bin')->with('success', 'Item restored successfully!');
+    }
+
+    public function forceDelete($id)
+    {
+        $item = Item::withTrashed()->findOrFail($id); // Hel xogta la tirtiray
+        $item->forceDelete(); // Si joogto ah uga tirtir database-ka
+
+        return redirect()->route('items.recycle_bin')->with('success', 'Item permanently deleted!');
+    }
 }

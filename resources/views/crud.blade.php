@@ -21,7 +21,11 @@
             </style>
         @endif
     </head>
-    <body class="bg-light d-flex justify-content-center align-items-center vh-100">
+    <body >
+      @extends('layouts.app')
+
+      @section('content')
+      <div class="bg-light d-flex justify-content-center align-items-center vh-100" >
         <div class="card shadow-sm" style="width: 22rem;">
             <div class="card-body">
               <h5 class="card-title text-center mb-4">Add Item</h5>
@@ -50,7 +54,7 @@
           </div>
           <div class="card shadow-sm" style="width: 52rem;">
             <div class="card-body">
-              <h5 class="card-title text-center mb-4">Read Item</h5>
+              <h5 class="card-title text-center mb-4">Read Item | update item | delete item</h5>
               @if (session('success'))
                   <div class="alert alert-success">
                       {{ session('success') }}
@@ -133,6 +137,9 @@
             
             </div>
           </div>
+        </div>
+        @endsection
+          
 
           <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 
