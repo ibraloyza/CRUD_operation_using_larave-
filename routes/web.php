@@ -13,7 +13,7 @@ Route::get('/crud', [ItemController::class, 'index'])->name('crud'); // List ite
 Route::post('/items', [ItemController::class, 'store'])->name('items.store');
 
 // Route for updating the item
-Route::put('/items/{id}', [ItemController::class, 'update'])->name('items.update'); // Changed to PUT
+Route::PUT('/items/{id}', [ItemController::class, 'update'])->name('items.update'); // Changed to PUT
 
 // Route for deleting the item
 Route::delete('/items/{id}/delete', [ItemController::class, 'destroy'])->name('items.destroy');

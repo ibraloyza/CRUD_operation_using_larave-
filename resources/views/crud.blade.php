@@ -100,7 +100,7 @@
                                 <div class="modal-content">
                                     <form action="{{ route('items.update', $item->id) }}" method="POST">
                                         @csrf
-                                        @method('POST')
+                                        @method('put')
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Update Item</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
